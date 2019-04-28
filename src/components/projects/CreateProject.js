@@ -1,4 +1,6 @@
 import React from 'react';
+import  { connect } from "react-redux";
+import { createProject } from "../../store/actions/project";
 
 class CreateProject extends React.Component {
 
@@ -21,8 +23,7 @@ class CreateProject extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        console.log(this.state);
-
+        this.props.createProject(this.state);
     }
     render() {
         return(
@@ -51,4 +52,21 @@ class CreateProject extends React.Component {
     }
 }
 
-export default CreateProject;
+/**
+ * Get data from store
+ * @param state
+ */
+const mapStateToProps = state => ({
+
+});
+
+/**
+ * Import action from dir action above - but must be passed to connect method in order to trigger reducer in store
+ * @type {{UserUpdate: UserUpdateAction}}
+ */
+const mapActionsToProps = {
+    createProject
+};
+
+export default connect(mapStateToProps, mapActionsToProps)(CreateProject);
+

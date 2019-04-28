@@ -1,3 +1,5 @@
+import {ADD_PROJECT} from "../types/project";
+
 const initState = {
     projects: [
         { id: 1, title: 'Help me find peach', content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet ducimus hic quidem! Animi autem blanditiis, dicta eos fugit impedit incidunt iste, labore magnam maiores mollitia nihil placeat sint unde vitae?' },
@@ -8,6 +10,16 @@ const initState = {
     ]
 };
 
-const projectReducer = ( state = initState, action ) => state;
+const projectReducer = ( state = initState, action ) => {
+    switch (action.type) {
+        case ADD_PROJECT:
+            state.projects.push(action.payload);
+            console.log(action.payload);
+
+        default:
+            return state;
+    }
+    return state;
+}
 
 export default projectReducer;
