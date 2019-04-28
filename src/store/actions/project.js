@@ -1,4 +1,4 @@
-import { ADD_PROJECT } from "../types/project";
+import { ADD_PROJECT, ADD_PROJECT_FAIL } from "../types/project";
 
 
 export const createProject = (project) => {
@@ -7,7 +7,18 @@ export const createProject = (project) => {
         payload: {project}
     } */
 
-    return (dispatch, getState) => {
-        dispatch( { type: ADD_PROJECT, payload: project });
+    return (dispatch, getState, {getFirebase, getFirestore}) => {
+        const firestore = getFirestore();
+        firestore.collection('projects').add({
+           ...project,
+            firstName: 'H',
+            lastName: 'Alex',
+            createdAt: new Date()
+        }).then( () => {
+            dispatch( { type: ADD_PROJECT, payload: project });
+        }).catch( (err) => {
+            dispatch( { type: ADD_PROJECT_FAIL, err } );
+        })
+
     }
-}
+};
