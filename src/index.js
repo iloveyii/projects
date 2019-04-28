@@ -15,12 +15,14 @@ import {reactReduxFirebase, getFirebase} from 'react-redux-firebase';
 import firebase from './config/firebase';
 
 
+
 const store = createStore(rootReducer,
     compose(
         applyMiddleware(thunk.withExtraArgument({
             getFirebase,
             getFirestore
         })),
+        window.devToolsExtension && window.devToolsExtension(),
         reduxFirestore(firebase),
         reactReduxFirebase(firebase)
     )
