@@ -1,7 +1,7 @@
 import { ADD_PROJECT, ADD_PROJECT_FAIL } from "../types/project";
 
 
-export const createProject = (project) => {
+export const createProject = (project, showProjectsList) => {
     /* return {
         type: ADD_PROJECT,
         payload: {project}
@@ -16,7 +16,7 @@ export const createProject = (project) => {
             lastName: 'Alex',
             createdAt: new Date()
         }).then( () => {
-            dispatch( { type: ADD_PROJECT, payload: project });
+            dispatch( { type: ADD_PROJECT, payload: project, showProjectsList : showProjectsList });
         }).catch( (err) => {
             dispatch( { type: ADD_PROJECT_FAIL, err } );
         })

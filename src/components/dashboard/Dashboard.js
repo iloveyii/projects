@@ -2,9 +2,11 @@ import React from 'react';
 import Notification from './Notification';
 import ProjectList from '../projects/ProjectList';
 import {connect} from "react-redux";
-import firebase from '../../config/firebase';
 import {compose} from 'redux';
 import 'firebase/database';
+import {withRouter} from 'react-router-dom';
+import { firestoreConnect } from 'react-redux-firebase';
+
 
 class Dashboard extends React.Component {
 
@@ -15,19 +17,22 @@ class Dashboard extends React.Component {
         };
     }
 
+    componentWillUpdate(nextProps, nextState, nextContext) {
+        console.log('componentWillUpdate', nextProps, nextContext);
+
+    }
+
+   componentWillReceiveProps(nextProps, nextContext) {
+       console.log('componentWillReceiveProps', nextProps, nextContext);
+   }
+
     componentDidMount() {
         console.log('Component did mount');
-
-        const pRef = firebase.database().ref('projects');
-        console.log(pRef);
-        pRef.on('value', (snapshot) => {
-            console.log('ON');
-            this.setState({projects: snapshot.val()});
-        });
     }
 
     render() {
         const {projects} = this.props;
+        
         return (
             <div className="dashboard container">
                 <div className="row">
@@ -43,13 +48,30 @@ class Dashboard extends React.Component {
     }
 }
 
+/*
 const mapStateToProps = state => {
     return {
         projects: state.project.projects
     }
 };
+const mapActionsToProps = {
+    createProject
+};
 
+export default withRouter(connect(mapStateToProps, mapActionsToProps)(Dashboard));
+*/
+
+
+const mapStateToProps = (state) => {
+    // console.log(state);
+    return {
+        projects: state.firestore.ordered.projects
+    }
+}
 
 export default compose(
-    connect(mapStateToProps)
-)(Dashboard);
+    connect(mapStateToProps),
+    firestoreConnect([
+        { collection: 'projects' }
+    ])
+)(Dashboard)

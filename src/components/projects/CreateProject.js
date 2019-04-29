@@ -1,6 +1,7 @@
 import React from 'react';
 import  { connect } from "react-redux";
 import { createProject } from "../../store/actions/project";
+import {withRouter} from 'react-router-dom';
 
 class CreateProject extends React.Component {
 
@@ -13,6 +14,11 @@ class CreateProject extends React.Component {
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.showProjectList = this.showProjectList.bind(this);
+    }
+
+    showProjectList() {
+        this.props.history.push('/');
     }
 
     handleChange(e) {
@@ -23,7 +29,10 @@ class CreateProject extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        this.props.createProject(this.state);
+        this.props.createProject(this.state, this.showProjectList);
+        setTimeout( () => {
+            this.showProjectList();
+        }, 1000, this)
     }
     render() {
         return(
@@ -68,5 +77,5 @@ const mapActionsToProps = {
     createProject
 };
 
-export default connect(mapStateToProps, mapActionsToProps)(CreateProject);
+export default withRouter(connect(mapStateToProps, mapActionsToProps)(CreateProject));
 
