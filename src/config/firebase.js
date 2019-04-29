@@ -1,7 +1,7 @@
 import  firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
-
+import 'firebase/database';
 
 // Initialize Firebase
 var config = {
@@ -12,7 +12,12 @@ var config = {
     storageBucket: "eshop-aa94e.appspot.com",
     messagingSenderId: "1085585020624"
 };
-firebase.initializeApp(config);
+const fa = firebase.initializeApp(config);
 firebase.firestore().settings({ timestampsInSnapshots : true });
+
+fa.database().ref('projects').on('value', ss => {
+    const projects = ss.val();
+    console.log(projects);
+});
 
 export default firebase;

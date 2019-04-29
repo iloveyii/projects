@@ -9,6 +9,7 @@ export const createProject = (project) => {
 
     return (dispatch, getState, {getFirebase, getFirestore}) => {
         const firestore = getFirestore();
+        console.log(firestore.collection('projects'));
         firestore.collection('projects').add({
            ...project,
             firstName: 'H',
