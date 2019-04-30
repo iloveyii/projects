@@ -15,32 +15,22 @@ import {reactReduxFirebase, getFirebase} from 'react-redux-firebase';
 import fbConfig from './config/fbConfig';
 
 
-/*
-const store = createStore(rootReducer,
-    compose(
-        applyMiddleware(thunk.withExtraArgument({
-            getFirebase,
-            getFirestore
-        })),
-        window.devToolsExtension && window.devToolsExtension(),
-        reduxFirestore(firebase),
-        reactReduxFirebase(firebase)
-    )
-); */
-
 const store = createStore(rootReducer,
     compose(
         applyMiddleware(thunk.withExtraArgument({getFirebase, getFirestore})),
-        reactReduxFirebase(fbConfig), // redux binding for firebase
+        reactReduxFirebase(fbConfig, { attachAuthIsReady : true }), // redux binding for firebase
         reduxFirestore(fbConfig) // redux bindings for firestore
     )
 );
 
-ReactDOM.render(
-    <Provider store={store}>
-        <App/>
-    </Provider>
-    , document.getElementById('root'));
+store.firebaseAuthIsReady.then( () => {
+    ReactDOM.render(
+        <Provider store={store}>
+            <App/>
+        </Provider>
+        , document.getElementById('root'));
+};
+
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
