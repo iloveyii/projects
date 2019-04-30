@@ -1,4 +1,6 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
+import { connect } from "react-redux";
 
 class SignIn extends React.Component {
 
@@ -27,6 +29,10 @@ class SignIn extends React.Component {
 
     }
     render() {
+        const { auth } = this.props;
+
+        if(auth.uid) return <Redirect to={'/'} />;
+
         return(
             <div className="container">
 
@@ -63,4 +69,19 @@ class SignIn extends React.Component {
     }
 }
 
-export default SignIn;
+/**
+ * Get data from store
+ * @param state
+ */
+const mapStateToProps = state => ({
+    auth: state.firebase.auth
+});
+
+/**
+ * Import action from dir action above - but must be passed to connect method in order to trigger reducer in store
+ * @type {{UserUpdate: UserUpdateAction}}
+ */
+const mapActionsToProps = {
+};
+
+export default connect(mapStateToProps, mapActionsToProps)(SignIn);
