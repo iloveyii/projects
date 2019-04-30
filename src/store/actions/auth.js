@@ -1,4 +1,12 @@
-import {LOGIN, LOGIN_FAIL, LOGIN_SUCCESS, SIGNOUT_FAIL, SIGNOUT_SUCCESS} from "../types/auth";
+import {
+    LOGIN,
+    LOGIN_FAIL,
+    LOGIN_SUCCESS,
+    SIGN_UP_FAIL,
+    SIGN_UP_SUCCESS,
+    SIGNOUT_FAIL,
+    SIGNOUT_SUCCESS
+} from "../types/auth";
 
 export const signIn = (credentials) => {
     return (dispatch, getState, {getFirebase}) => {
@@ -22,6 +30,30 @@ export const signOut = () => {
             dispatch( { type : SIGNOUT_SUCCESS})
         }).catch(  err => {
             dispatch({ type: SIGNOUT_FAIL, err });
+        })
+    }
+};
+
+
+
+export const signUp = (newUser) => {
+    return (dispatch, getState, {getFirebase, getFirestore}) => {
+        const firebase = getFirebase();
+        const firestore = getFirestore();
+
+        firebase.auth().createUserWithEmailAndPassword(
+            newUser.email,
+            newUser.password
+        ).then( (resp) => {
+            return firestore.collection('users').doc(resp.user.uid).set({
+                firstName: newUser.firstName,
+                lastName: newUser.lastName,
+                initials: newUser.firstName[0] + newUser.lastName[0]
+            })
+        }).then(  () => {
+            dispatch({ type: SIGN_UP_SUCCESS });
+        }).catch(  err => {
+            dispatch({ type: SIGN_UP_FAIL, err });
         })
     }
 };
