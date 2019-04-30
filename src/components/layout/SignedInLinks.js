@@ -1,6 +1,5 @@
 import React from 'react';
 import { NavLink } from "react-router-dom";
-import {signIn} from "../../store/actions/auth";
 import { connect } from "react-redux";
 import { signOut } from "../../store/actions/auth";
 

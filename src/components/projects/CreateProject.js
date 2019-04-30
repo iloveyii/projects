@@ -30,9 +30,7 @@ class CreateProject extends React.Component {
     handleSubmit(e) {
         e.preventDefault();
         this.props.createProject(this.state, this.showProjectList);
-        setTimeout( () => {
-            this.showProjectList();
-        }, 1000, this)
+        this.props.history.push('/');
     }
     render() {
         const {auth} = this.props;
