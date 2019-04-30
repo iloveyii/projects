@@ -1,7 +1,7 @@
 import React from 'react';
 import  { connect } from "react-redux";
 import { createProject } from "../../store/actions/project";
-import {withRouter} from 'react-router-dom';
+import {withRouter, Redirect} from 'react-router-dom';
 
 class CreateProject extends React.Component {
 
@@ -35,6 +35,10 @@ class CreateProject extends React.Component {
         }, 1000, this)
     }
     render() {
+        const {auth} = this.props;
+
+        if(!auth.uid) return <Redirect to={'/signin'} />
+
         return(
             <div className="container">
 
@@ -66,7 +70,7 @@ class CreateProject extends React.Component {
  * @param state
  */
 const mapStateToProps = state => ({
-
+    auth: state.firebase.auth
 });
 
 /**
